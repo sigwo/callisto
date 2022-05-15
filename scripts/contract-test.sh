@@ -1,7 +1,7 @@
 #!/bin/bash
 
 KEY="mykey"
-CHAINID="ethermint_9000-1"
+CHAINID="callisto_85-1"
 MONIKER="localtestnet"
 
 # stop and remove existing daemon and client data and process(es)
@@ -18,15 +18,15 @@ make build-ethermint
 
 # Change parameter token denominations to aphoton
 cat $HOME/.ethermint/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="stake"' > $HOME/.ethermint/config/tmp_genesis.json && mv $HOME/.ethermint/config/tmp_genesis.json $HOME/.ethermint/config/genesis.json
-cat $HOME/.ethermint/config/genesis.json | jq '.app_state["crisis"]["constant_fee"]["denom"]="aphoton"' > $HOME/.ethermint/config/tmp_genesis.json && mv $HOME/.ethermint/config/tmp_genesis.json $HOME/.ethermint/config/genesis.json
-cat $HOME/.ethermint/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="aphoton"' > $HOME/.ethermint/config/tmp_genesis.json && mv $HOME/.ethermint/config/tmp_genesis.json $HOME/.ethermint/config/genesis.json
-cat $HOME/.ethermint/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="aphoton"' > $HOME/.ethermint/config/tmp_genesis.json && mv $HOME/.ethermint/config/tmp_genesis.json $HOME/.ethermint/config/genesis.json
+cat $HOME/.ethermint/config/genesis.json | jq '.app_state["crisis"]["constant_fee"]["denom"]="jup"' > $HOME/.ethermint/config/tmp_genesis.json && mv $HOME/.ethermint/config/tmp_genesis.json $HOME/.ethermint/config/genesis.json
+cat $HOME/.ethermint/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="jup"' > $HOME/.ethermint/config/tmp_genesis.json && mv $HOME/.ethermint/config/tmp_genesis.json $HOME/.ethermint/config/genesis.json
+cat $HOME/.ethermint/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="jup"' > $HOME/.ethermint/config/tmp_genesis.json && mv $HOME/.ethermint/config/tmp_genesis.json $HOME/.ethermint/config/genesis.json
 
 # Allocate genesis accounts (cosmos formatted addresses)
-"$PWD"/build/ethermintd add-genesis-account "$("$PWD"/build/ethermintd keys show "$KEY" -a --keyring-backend test)" 100000000000000000000aphoton,10000000000000000000stake --keyring-backend test
+"$PWD"/build/ethermintd add-genesis-account "$("$PWD"/build/ethermintd keys show "$KEY" -a --keyring-backend test)" 100000000000000000000jup,10000000000000000000stake --keyring-backend test
 
 # Sign genesis transaction
-"$PWD"/build/ethermintd gentx $KEY 10000000000000000000stake --amount=100000000000000000000aphoton --keyring-backend test --chain-id $CHAINID
+"$PWD"/build/ethermintd gentx $KEY 10000000000000000000stake --amount=100000000000000000000jup --keyring-backend test --chain-id $CHAINID
 
 # Collect genesis tx
 "$PWD"/build/ethermintd collect-gentxs

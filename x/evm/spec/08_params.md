@@ -10,7 +10,7 @@ The evm module contains the following parameters:
 
 | Key            | Type        | Default Value   |
 | -------------- | ----------- | --------------- |
-| `EVMDenom`     | string      | `"aphoton"`     |
+| `EVMDenom`     | string      | `"jup"`     |
 | `EnableCreate` | bool        | `true`          |
 | `EnableCall`   | bool        | `true`          |
 | `ExtraEIPs`    | []int       | TBD             |
