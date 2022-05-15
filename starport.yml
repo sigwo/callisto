@@ -1,18 +1,18 @@
 accounts:
   - name: alice
-    coins: ["100000000000000000000jup"]
+    coins: ["100000000uatom", "100000000000000000000ajup"]
   - name: bob
-    coins: ["5000000000000jup"]
+    coins: ["5000000000000ajup"]
   - name: faucet
-    coins: ["1000000000000000000000000000jup"]
+    coins: ["1000000000000000000000000000ajup"]
 validator:
   name: alice
-  staked: "100000000000000000000jup"
+  staked: "100000000000000000000ajup"
 faucet:
   port: 4500
   name: "faucet"
-  coins: ["1000000000000000000000000000jup"]
-  coins_max: ["100000000jup"]
+  coins: ["1000000000000000000000000000ajup"]
+  coins_max: ["100000000ajup"]
 build:
   binary: "ethermintd"
 init:
@@ -28,18 +28,18 @@ genesis:
   app_state:
     staking:
       params:
-        bond_denom: "jup"
+        bond_denom: "ajup"
     mint:
       params:
-        mint_denom: "jup"
+        mint_denom: "ajup"
     crisis:
       constant_fee:
-        denom: "jup"
+        denom: "ajup"
     gov:
       deposit_params:
         min_deposit:
           - amount: "10000000"
-            denom: "jup"
+            denom: "ajup"
     evm:
       params:
-        evm_denom: "jup"
+        evm_denom: "ajup"
