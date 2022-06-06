@@ -1,8 +1,8 @@
 #!/bin/bash
 
-KEY="mykey"
-CHAINID="callisto_85-1"
-MONIKER="callisto"
+KEY="genesis"
+CHAINID="jupiter_85-1"
+MONIKER="jupiter"
 KEYRING="test"
 KEYALGO="eth_secp256k1"
 LOGLEVEL="info"
@@ -16,16 +16,16 @@ command -v jq > /dev/null 2>&1 || { echo >&2 "jq not installed. More info: https
 # remove existing daemon and client
 rm -rf ~/.ethermintd*
 
-make install
+#make install
 
-ethermintd config keyring-backend $KEYRING
-ethermintd config chain-id $CHAINID
+jupiterd config keyring-backend $KEYRING
+jupiterd config chain-id $CHAINID
 
 # if $KEY exists it should be deleted
-ethermintd keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
+jupiterd keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
 
 # Set moniker and chain-id for Ethermint (Moniker can be anything, chain-id must be an integer)
-ethermintd init $MONIKER --chain-id $CHAINID
+jupiterd init $MONIKER --chain-id $CHAINID
 
 # Change parameter token denominations to ajup
 cat $HOME/.ethermintd/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="ajup"' > $HOME/.ethermintd/config/tmp_genesis.json && mv $HOME/.ethermintd/config/tmp_genesis.json $HOME/.ethermintd/config/genesis.json
@@ -71,20 +71,20 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Allocate genesis accounts (cosmos formatted addresses)
-ethermintd add-genesis-account $KEY 100000000000000000000000000ajup --keyring-backend $KEYRING
+jupiterd add-genesis-account $KEY 200001000000000000000000000ajup --keyring-backend $KEYRING
 
 # Sign genesis transaction
-ethermintd gentx $KEY 1000000000000000000000ajup --keyring-backend $KEYRING --chain-id $CHAINID
+jupiterd gentx $KEY 1000000000000000000000ajup --keyring-backend $KEYRING --chain-id $CHAINID
 
 # Collect genesis tx
-ethermintd collect-gentxs
+jupiterd collect-gentxs
 
 # Run this to ensure everything worked and that the genesis file is setup correctly
-ethermintd validate-genesis
+jupiterd validate-genesis
 
 if [[ $1 == "pending" ]]; then
   echo "pending mode is on, please wait for the first block committed."
 fi
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
-ethermintd start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001ajup --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
+jupiterd start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001ajup --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
